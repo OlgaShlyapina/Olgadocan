@@ -1,28 +1,32 @@
 ---
-- name: "установка Ansible Playbook для user"
+- name: установка Flaskex
   hosts: MyVm
   
   tasks:
     - name: Установка pyton3-pip и git
-        apt:
-            pkg:
-            - python3-pip
-            - git
-            update_cache: yes
-            autoclean: yes
+      apt:
+        pkg:
+        - python3-pip
+        - git
+        update_cache: yes
+        autoclean: yes
             
     - name: Добавление пользователя 'UserName' 
-        user: name=UserName shell=/bin/bash
+      user: 
+        name: UserName 
+        shell: /bin/bash
         
     - name: Развертывание приложения
-        git: repo=https://github.com/anfederico/Flaskex dest=/home/UserName/Flaskex
-        become: true
-        become_user: UserName
-        become_method: su
+      git: 
+        repo: https://github.com/anfederico/Flaskex 
+        dest: /home/UserName/Flaskex
+      become: true
+      become_user: UserName
+      become_method: su
         
     - name: запуск MyVm
-        shell: cd /home/UserName/Flaskex && pip3 install -r requirements.txt && python3 app.py
-        become: true
-        become_user: UserName
-        become_method: su
+      shell: cd /home/UserName/Flaskex && pip3 install -r requirements.txt && python3 app.py &
+      become: true
+      become_user: UserName
+      become_method: su
         
